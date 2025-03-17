@@ -1,4 +1,4 @@
-import day01, day02, day03
+import day01, day02, day03, day04, day07, day08, day13, day14, day15, day19
 
 day01.do1()
 day01.do2()
@@ -6,3 +6,10 @@ day02.do1()
 day02.do2()
 day03.do1()
 day03.do2()
+day04.do1()
+day07.do1()
+day08.do1()
+day13.do1()
+day14.do1()
+day15.do1()
+day19.do1()

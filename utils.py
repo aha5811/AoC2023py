@@ -18,3 +18,6 @@ def f2lines(fname):
         for line in file:
             res.append(line.strip())
     return res
+
+def s2is(s, sep):
+    return list(map(lambda x : int(x.strip()), s.split(sep)))
