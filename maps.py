@@ -1,3 +1,5 @@
+import utils
+
 d90 = [(1, 0), (0, 1), (-1, 0), (0, -1)] # W S E N
 dE, dS, dW,dN = d90[0], d90[1], d90[2], d90[3]
 d45 = [(1, 1), (-1, 1), (-1, -1), (1, -1)] # SE SW NW NE
@@ -5,18 +7,20 @@ dSE, dSW, dNW, dNE = d45[0], d45[1], d45[2], d45[3]
 ds = d90 + d45
 
 class Map:
-    def __init__(self, fname):
+    def from_file(fname):
+        return Map(utils.f2lines(fname))
+
+    def __init__(self, lines):
         self.rows = []
-        with open(fname, 'r') as f:
-            for line in f:
-                self.rows.append(list(line.strip()))
+        for line in lines:
+            self.rows.append(list(line.strip()))
         self.h = len(self.rows)
         self.w = len(self.rows[0])
 
     def __str__(self):
         res = ""
         for row in self.rows:
-            res += "".join(row)
+            res += "".join(row) + "\n"
         return res
 
     def get(self, x, y):

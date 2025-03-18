@@ -54,7 +54,7 @@ def part1(fname):
 
     skip = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
 
-    m = Map(fname)
+    m = Map.from_file(fname)
     for s in m.get_symbols():
         if s not in skip:
             for p in m.find_all(s):
@@ -71,7 +71,7 @@ def do1():
 def part2(fname):
     res = 0
 
-    m = Map(fname)
+    m = Map.from_file(fname)
     for p in m.find_all('*'):
         ns = get_numbers_around(m, p)
         if len(ns) == 2:

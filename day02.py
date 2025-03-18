@@ -31,8 +31,6 @@ def do1():
     assert 8 == part1(ftest)
     assert 1853 == part1(finput)
 
-do1()
-
 @utils.timeit
 def part2(fname):
     res = 0
