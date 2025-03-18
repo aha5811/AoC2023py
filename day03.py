@@ -13,8 +13,8 @@ def read_left(m, p):
         s = m.get(p.x - n, p.y)
         if s is None or s == '.':
             break
-        res = s + res
-    return res
+        res += s
+    return res[::-1] # reverse
 
 # read digits right of position
 def read_right(m, p):
@@ -27,18 +27,18 @@ def read_right(m, p):
         res += s
     return res
 
-def add_if_n(res, n):
-    if n != '':
-        res.append(int(n))
+def add_if_n(ns: list[int], s: str):
+    if s != '':
+        ns.append(int(s))
 
-# read top and bottom
-def read_tb(m, pp, res):
+# read top or bottom
+def read_tb(m: Map, pp: Pos, ns: list[int]):
     t = m.get(pp.x, pp.y)
     if t is not None: # so we're reading inside the map
         tl = read_left(m, pp)
         tr = read_right(m, pp)
-        for n in (tl + t + tr).split('.'):
-            add_if_n(res, n)
+        for s in (tl + t + tr).split('.'):
+            add_if_n(ns, s)
 
 def get_numbers_around(m, p):
     res = []
@@ -56,7 +56,7 @@ def part1(fname):
 
     m = Map.from_file(fname)
     for s in m.get_symbols():
-        if s not in skip:
+        if s not in skip: # so it's a symbol
             for p in m.find_all(s):
                 for n in get_numbers_around(m, p):
                     res += n

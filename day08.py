@@ -10,33 +10,31 @@ class Node:
         self.r = r
         self.l = l
 
-#AAA = (BBB, CCC)
-
 @utils.timeit
 def part1(fname):
 
     instr = None
-    nm = {}
+    nm = {} # node name -> node
 
     for line in utils.f2lines(fname):
         if instr is None:
             instr = line
         elif "=" in line:
+            # AAA = (BBB, CCC)
             n_rl = line.split("=")
             n = n_rl[0].strip()
             l, r = n_rl[1].strip()[1:-1].split(',')
-            no = Node(l, r.strip())
-            nm[n] = no
+            nm[n] = Node(l, r.strip())
 
-    ii = 0
-    nn = 'AAA'
+    ii = 0 # instruction index
+    nn = 'AAA' # node name
     step = 0
 
     while True:
         step += 1
         i = instr[ii]
         n = nm[nn]
-        nn = n.r if i == 'R' else n.l
+        nn = n.r if i == 'R' else n.l # else i == 'L'
         if nn == 'ZZZ':
             break
         ii = (ii + 1) % len(instr)

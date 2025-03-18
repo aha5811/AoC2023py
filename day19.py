@@ -4,9 +4,10 @@ dir = os.path.dirname(__file__)
 ftest = os.path.join(dir, 'day19_test.txt')
 finput = os.path.join(dir, 'day19_input.txt')
 
-class P:
+class Part:
     def __init__(self, line):
-        self.kv = {}
+        self.kv = {} # key -> value
+        # {x=787,m=2655,a=1222,s=2876}
         for kv in line[1:-1].split(','):
             k, v = kv.split('=')
             self.kv[k] = int(v)
@@ -15,13 +16,13 @@ class P:
         return str(self.kv)
 
 
-class R:
+class Rule:
     def __init__(self, s: str):
         self.what = None
-        self.gt = None
-        self.v = None
+        self.gt = None # is greater than (or lesser than)
+        self.v = None # value
         self.where = None
-
+        # "a<2006:qkq" or just "qkq"
         if ':' in s:
             ss = s.split(':')
             self.what = ss[0][0]
@@ -38,7 +39,7 @@ class R:
                 else 'True')
             + '->' + self.where)
 
-    def target(self, p: P) -> str:
+    def target(self, p: Part) -> str:
         if self.what is None:
             return self.where
         else:
@@ -50,18 +51,19 @@ class R:
                 else None)
 
 
-class WF:
+class Workflow:
     def __init__(self, line: str):
+        # px{a<2006:qkq,m>2090:A,rfg}
         n_rules = line[:-1].split('{')
         self.n = n_rules[0]
         self.rules = []
         for rule in n_rules[1].split(','):
-            self.rules.append(R(rule))
+            self.rules.append(Rule(rule))
 
     def __str__(self):
         return self.n + ':' + str([str(rule) for rule in self.rules])
 
-    def send(self, p: P) -> str:
+    def send(self, p: Part) -> str:
         for rule in self.rules:
             t = rule.target(p)
             if t is not None:
@@ -71,14 +73,14 @@ class WF:
 def part1(fname):
     res = 0
 
-    wfm = {}
-    ps = []
+    wfm = {} # workflow name -> workflow
+    ps = [] # parts
 
     for line in utils.f2lines(fname):
         if line.startswith('{'):
-            ps.append(P(line))
+            ps.append(Part(line))
         elif '{' in line:
-            wf = WF(line)
+            wf = Workflow(line)
             wfm[wf.n] = wf
 
     for p in ps:
@@ -87,8 +89,8 @@ def part1(fname):
 
     return res
 
-def accept(wfm, p: P) -> bool:
-    wfn = 'in'
+def accept(wfm, p: Part) -> bool:
+    wfn = 'in' # workflow name
     while True:
         wfn = wfm[wfn].send(p)
         if wfn == 'A':

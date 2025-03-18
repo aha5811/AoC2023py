@@ -12,12 +12,12 @@ def part1(fname):
     m = Map.from_file(fname)
 
     rocks = m.find_all('O')
-    rocks.sort(key=lambda p: p.y)
+    rocks.sort(key=lambda p: p.y) # because we move the topmost first
 
     for r in rocks:
         m.set(r.x, r.y, '.') # remove rock
         yy = r.y
-        while True:
+        while True: # check free
             yy -= 1
             if m.get(r.x, yy) != '.':
                 break

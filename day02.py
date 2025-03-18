@@ -1,5 +1,7 @@
+from tkinter.constants import NUMERIC
+
 import utils
-from collections import Counter
+import functools
 import os.path
 dir = os.path.dirname(__file__)
 ftest = os.path.join(dir, 'day02_test.txt')
@@ -7,21 +9,21 @@ finput = os.path.join(dir, 'day02_input.txt')
 
 part1_col_max = { 'red': 12, 'green': 13, 'blue': 14 }
 
-#Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-
 @utils.timeit
 def part1(fname):
     res = 0
 
     for line in utils.f2lines(fname):
+        # Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
         gid, game = line.split(':')
         id = int(gid.split(' ')[1])
         possible = True
-        for set_of_cubes in game.split(';'):
-            for cubes in set_of_cubes.split(','):
-                n_col = cubes.strip().split(' ')
+        for set_of_cubes in game.split(';'): # 3 blue, 4 red
+            for cubes in set_of_cubes.split(','): #  3 blue
+                n_col = cubes.strip().split(' ') # number,color
                 if int(n_col[0]) > part1_col_max[n_col[1]]:
                     possible = False
+                    break
         if possible:
             res += id
 
@@ -43,7 +45,7 @@ def part2(fname):
                 n = int(n_col[0])
                 col = n_col[1]
                 mins[col] = max(mins[col], n)
-        res += mins['red'] * mins['green'] * mins['blue']
+        res += functools.reduce(lambda x,y: x * y, mins.values())
 
     return res
 

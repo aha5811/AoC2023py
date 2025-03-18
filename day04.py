@@ -5,8 +5,6 @@ dir = os.path.dirname(__file__)
 ftest = os.path.join(dir, 'day04_test.txt')
 finput = os.path.join(dir, 'day04_input.txt')
 
-#Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-
 @utils.timeit
 def part1(fname):
     res = 0
@@ -15,6 +13,7 @@ def part1(fname):
         return utils.s2is(re.sub("\\s+", ' ', s).strip(), ' ')
 
     for line in utils.f2lines(fname):
+        # Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
         right = line.split(':')[1].split('|')
         winning = to_n(right[0])
         mine = to_n(right[1])

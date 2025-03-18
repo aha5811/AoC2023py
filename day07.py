@@ -13,22 +13,21 @@ class Hand:
         cb = s.split(' ')
         self.cards = cb[0]
         self.bid = int(cb[1])
-        c = Counter(self.cards).most_common(2)
-        self.r = c[0][1] * 10 + (c[1][1] if len(c) > 1 and c[1][1] > 1 else 0)
+        c = Counter(self.cards).most_common(2) # 55443 -> [('5', 2'), ('4', 2)]
+        # self made rank: 5 = 50, 4 = 40, 3+2 = 32, 3 = 30, 2+2 = 22, 2 = 20, 1 = 10
+        self.rank = c[0][1] * 10 + (c[1][1] if len(c) > 1 and c[1][1] > 1 else 0)
 
     def __str__(self):
-        return ''.join(self.cards) + ' ' + str(self.bid) + ' ' + str(self.r)
+        return ''.join(self.cards) + ' ' + str(self.bid) + ' ' + str(self.rank)
 
 def hand_cmp(h1, h2):
-    if h1.r != h2.r:
-        return h1.r - h2.r
+    if h1.rank != h2.rank:
+        return h1.rank - h2.rank
     else: # check rank of cards in order
-        n = 0
-        while n < len(h1.cards):
-            ret = cart_order.index(h2.cards[n]) - cart_order.index(h1.cards[n])
-            if ret != 0:
-                return ret
-            n += 1
+        for n in range(len(h1.cards)):
+            cmp = cart_order.index(h2.cards[n]) - cart_order.index(h1.cards[n])
+            if cmp != 0:
+                return cmp
         return 0
 
 @utils.timeit

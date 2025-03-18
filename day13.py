@@ -9,16 +9,17 @@ def get_mres(lines):
 
     m = Map(lines)
 
-    for mx in range(1, m.w):
+    # find vertical mirror
+    for mx in range(1, m.w): # mx = 1 == mirror between 0 and 1
         is_mirror = True
-        for y in range(0, m.h):
+        for y in range(0, m.h): # for every row
             dx = 1
             while True:
                 left = m.get(mx - dx, y)
                 right = m.get(mx - 1 + dx, y)
-                if left is None or right is None:
+                if left is None or right is None: # outside of map
                     break
-                if left != right:
+                if left != right: # discrepancy -> can't be mirror
                     is_mirror = False
                     break
                 dx += 1
@@ -27,6 +28,7 @@ def get_mres(lines):
         if is_mirror:
             return mx
 
+    # find horizonal mirror analogue
     for my in range(1, m.h):
         is_mirror = True
         for x in range(0, m.w):
